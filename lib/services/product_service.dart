@@ -17,4 +17,17 @@ class ProductService {
       throw Exception("Failed to fetch Products");
     }
   }
+
+  Future<List<Product>> fetchProductsByCategory(int categoryId) async {
+    var url = Uri.parse('$API_BASE_URL/categories/$categoryId/products');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      List<Product> products =
+          data.map((json) => Product.fromJson(json)).toList();
+      return products;
+    } else {
+      throw Exception("Failed to fetch Products");
+    }
+  }
 }

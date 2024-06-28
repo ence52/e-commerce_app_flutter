@@ -1,0 +1,32 @@
+Consumer<HomeViewModel>(
+                    builder: (context, homeViewModel, child) {
+                      if (homeViewModel.isLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      return ListView.builder(
+                        itemCount: homeViewModel.categories.length,
+                        itemBuilder: (context, index) => TestWidget(
+                          category: homeViewModel.categories[index],
+                        ),
+                      );
+                    },
+                  )
+
+
+
+
+
+
+
+Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Discover",
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.w500),
+                    ),
+                    _createCartButton(),
+                  ],
+                ),
