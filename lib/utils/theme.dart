@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 ThemeData theme = ThemeData(
+    useMaterial3: false,
     fontFamily: "SfProDisplay",
     scaffoldBackgroundColor: themeWhite,
+    appBarTheme: const AppBarTheme(color: themeWhite),
     inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),

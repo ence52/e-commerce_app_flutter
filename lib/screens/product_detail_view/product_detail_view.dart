@@ -64,6 +64,9 @@ class ProductDetailView extends StatelessWidget {
                         function: () {
                           Navigator.pop(context);
                         }),
+                    const SizedBox(
+                      width: 15,
+                    ),
                     CustomButton(
                         icon: Icons.share_outlined,
                         function: () {
@@ -79,8 +82,9 @@ class ProductDetailView extends StatelessWidget {
     );
   }
 
-  SizedBox _createPhotosSection(Product product) {
-    return SizedBox(
+  Container _createPhotosSection(Product product) {
+    return Container(
+        color: themeGrey,
         height: 50.h,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,

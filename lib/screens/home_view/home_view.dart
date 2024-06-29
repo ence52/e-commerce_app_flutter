@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/screens/cart_view/cart_view.dart';
 import 'package:ecommerce_app/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -208,10 +209,6 @@ class _HomeViewState extends State<HomeView> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (homeViewModel.products.isEmpty) {
-            return const Center(child: Text('No products found'));
-          }
-
           return GridView.builder(
             cacheExtent: 2000,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -239,7 +236,13 @@ class _HomeViewState extends State<HomeView> {
           padding: const EdgeInsets.all(2),
           child: CustomButton(
             icon: Icons.shopping_bag_outlined,
-            function: () {},
+            function: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CartView(),
+                  ));
+            },
           ),
         ),
         Container(
