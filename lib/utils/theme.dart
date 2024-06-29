@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 ThemeData theme = ThemeData(
     fontFamily: "SfProDisplay",
+    scaffoldBackgroundColor: themeWhite,
     inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),

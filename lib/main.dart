@@ -1,6 +1,8 @@
-import 'package:ecommerce_app/screens/home_view/home_view.dart';
+import 'package:ecommerce_app/screens/main_page.dart';
 import 'package:ecommerce_app/utils/theme.dart';
 import 'package:ecommerce_app/view_models/home_view_model.dart';
+import 'package:ecommerce_app/view_models/main_page_view_model.dart';
+import 'package:ecommerce_app/view_models/product_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -18,13 +20,21 @@ class MyApp extends StatelessWidget {
     return Sizer(builder: (context, orientation, deviceType) {
       return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => HomeViewModel()),
+          ChangeNotifierProvider(
+            create: (_) => HomeViewModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => MainPageViewModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => ProductDetailViewModel(),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'E-Commerce App',
           theme: theme,
-          home: const HomeView(),
+          home: const MainPageView(),
         ),
       );
     });

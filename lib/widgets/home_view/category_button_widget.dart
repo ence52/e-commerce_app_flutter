@@ -11,7 +11,6 @@ class CategoryButtonWidget extends StatefulWidget {
     required this.category,
   });
   final CategoryModel category;
-
   @override
   State<CategoryButtonWidget> createState() => _CategoryButtonWidgetState();
 }

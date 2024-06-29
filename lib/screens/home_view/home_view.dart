@@ -1,13 +1,13 @@
 import 'package:ecommerce_app/utils/constants.dart';
-import 'package:ecommerce_app/view_models/home_view_model.dart';
-import 'package:ecommerce_app/widgets/home_view/category_button_widget.dart';
-import 'package:ecommerce_app/widgets/home_view/item_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../view_models/home_view_model.dart';
+import '../../widgets/home_view/category_button_widget.dart';
 import '../../widgets/home_view/custom_button.dart';
+import '../../widgets/home_view/item_card.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -31,29 +31,27 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: themeWhite,
-        body: SafeArea(
-          child: Column(
-            children: [
-              _createTitleSection(),
-              _createSearchBar(),
-              const SizedBox(
-                height: 20,
-              ),
-              _createAdSection(),
-              const SizedBox(
-                height: 20,
-              ),
-              _createCategoriesAndSeeAllText(),
-              _createCategoryButtons(),
-              const SizedBox(
-                height: 10,
-              ),
-              _createProductsGrid()
-            ],
+    return SafeArea(
+      child: Column(
+        children: [
+          _createTitleSection(),
+          _createSearchBar(),
+          const SizedBox(
+            height: 20,
           ),
-        ));
+          _createAdSection(),
+          const SizedBox(
+            height: 20,
+          ),
+          _createCategoriesAndSeeAllText(),
+          _createCategoryButtons(),
+          const SizedBox(
+            height: 10,
+          ),
+          _createProductsGrid()
+        ],
+      ),
+    );
   }
 
   Padding _createTitleSection() {
@@ -183,9 +181,6 @@ class _HomeViewState extends State<HomeView> {
         height: 60,
         child: Consumer<HomeViewModel>(
           builder: (context, homeViewModel, child) {
-            if (homeViewModel.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: homeViewModel.categories.length,
@@ -197,6 +192,8 @@ class _HomeViewState extends State<HomeView> {
                           const SizedBox(width: defaultPadding),
                         CategoryButtonWidget(
                             category: homeViewModel.categories[index]),
+                        if (index == homeViewModel.categories.length - 1)
+                          const SizedBox(width: defaultPadding)
                       ],
                     ));
           },
@@ -216,6 +213,7 @@ class _HomeViewState extends State<HomeView> {
           }
 
           return GridView.builder(
+            cacheExtent: 2000,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, // Her satırda iki ürün
               mainAxisSpacing: 15.0,
@@ -237,10 +235,11 @@ class _HomeViewState extends State<HomeView> {
     return Stack(
       alignment: Alignment.topRight,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(2),
+        Padding(
+          padding: const EdgeInsets.all(2),
           child: CustomButton(
             icon: Icons.shopping_bag_outlined,
+            function: () {},
           ),
         ),
         Container(
