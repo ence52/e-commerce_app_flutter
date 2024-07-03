@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/utils/constants.dart';
+import 'package:ecommerce_app/view_models/cart_view_model.dart';
 import 'package:ecommerce_app/view_models/product_detail_view_model.dart';
 import 'package:ecommerce_app/widgets/home_view/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class ProductDetailView extends StatelessWidget {
         Provider.of<ProductDetailViewModel>(context, listen: true);
 
     Product product = productDetailViewModel.product;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: themeWhite,
@@ -26,7 +29,7 @@ class ProductDetailView extends StatelessWidget {
               height: 85.h,
               child: ListView(
                 children: [
-                  _createPhotosSection(product),
+                  _PhotosSection(product: product),
                   Container(
                     padding: const EdgeInsets.all(defaultPadding),
                     decoration: BoxDecoration(
@@ -45,55 +48,50 @@ class ProductDetailView extends StatelessWidget {
                 ],
               ),
             ),
-            _createPriceAndAddtoCart(product)
+            _createPriceAndAddtoCart(product, context)
           ]),
-          Padding(
-            padding: const EdgeInsets.all(defaultPadding * 0.7),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomButton(
-                    icon: Icons.arrow_back_ios_new,
-                    function: () {
-                      Navigator.pop(context);
-                    }),
-                Row(
-                  children: [
-                    CustomButton(
-                        icon: Icons.favorite,
-                        function: () {
-                          Navigator.pop(context);
-                        }),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    CustomButton(
-                        icon: Icons.share_outlined,
-                        function: () {
-                          Navigator.pop(context);
-                        })
-                  ],
-                ),
-              ],
-            ),
-          ),
+          _createCustomAppBar(context),
         ]),
       ),
     );
   }
 
-  Container _createPhotosSection(Product product) {
-    return Container(
-        color: themeGrey,
-        height: 50.h,
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: product.images!.length,
-            itemBuilder: (c, i) =>
-                PhotoWidget(url: product.images![i].url ?? "")));
+  Padding _createCustomAppBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(defaultPadding * 0.7),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomButton(
+              icon: Icons.arrow_back_ios_new,
+              function: () async {
+                if (!context.mounted) return;
+                Navigator.of(context).pop();
+                await context.read<CartViewModel>().getItemCount();
+              }),
+          Row(
+            children: [
+              CustomButton(
+                  icon: Icons.favorite,
+                  function: () {
+                    Navigator.pop(context);
+                  }),
+              const SizedBox(
+                width: 15,
+              ),
+              CustomButton(
+                  icon: Icons.share_outlined,
+                  function: () {
+                    Navigator.pop(context);
+                  })
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
-  Container _createPriceAndAddtoCart(Product product) {
+  Container _createPriceAndAddtoCart(Product product, BuildContext context) {
     return Container(
       color: themeWhite,
       child: Padding(
@@ -113,24 +111,39 @@ class ProductDetailView extends StatelessWidget {
                       TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
-                  height: 60,
-                  width: 200,
-                  child: OutlinedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                          side: const WidgetStatePropertyAll(BorderSide.none),
-                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12))),
-                          backgroundColor:
-                              const WidgetStatePropertyAll(themeGreen)),
-                      child: Text(
-                        "Add to Cart",
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            color: themeWhite,
-                            fontWeight: FontWeight.bold),
-                      )),
-                ),
+                    height: 60,
+                    width: 200,
+                    child: FutureBuilder<bool>(
+                      future: Provider.of<CartViewModel>(context, listen: true)
+                          .isProductInCart(product.id!),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          bool isInCart = snapshot.data ?? false;
+
+                          if (isInCart) {
+                            // Sepette varsa farklı bir widget göster
+                            return Container(
+                              decoration: BoxDecoration(
+                                  color: themeGreen.withAlpha(70),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Center(
+                                child: Text(
+                                  "In Cart",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: themeGreen,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return _createAddToCartButton(context, product.id!);
+                          }
+                        }
+                      },
+                    ))
               ],
             ),
             const SizedBox(
@@ -140,6 +153,27 @@ class ProductDetailView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  OutlinedButton _createAddToCartButton(BuildContext context, int productId) {
+    return OutlinedButton(
+        onPressed: () async {
+          await Provider.of<CartViewModel>(context, listen: false)
+              .increaseItemQuantityById(productId);
+          if (!context.mounted) return;
+          await Provider.of<CartViewModel>(context, listen: false)
+              .fetchProducts();
+        },
+        style: ButtonStyle(
+            side: const WidgetStatePropertyAll(BorderSide.none),
+            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12))),
+            backgroundColor: const WidgetStatePropertyAll(themeGreen)),
+        child: Text(
+          "Add to Cart",
+          style: TextStyle(
+              fontSize: 12.sp, color: themeWhite, fontWeight: FontWeight.bold),
+        ));
   }
 
   Text _createDescription(String description) {
@@ -210,6 +244,59 @@ class ProductDetailView extends StatelessWidget {
   }
 }
 
+class _PhotosSection extends StatefulWidget {
+  const _PhotosSection({
+    required this.product,
+  });
+
+  final Product product;
+
+  @override
+  State<_PhotosSection> createState() => _PhotosSectionState();
+}
+
+class _PhotosSectionState extends State<_PhotosSection> {
+  int activePage = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: themeGrey,
+        height: 50.h,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 48.h,
+              child: PageView.builder(
+                onPageChanged: (value) {
+                  setState(() {
+                    activePage = value;
+                  });
+                },
+                physics: const ClampingScrollPhysics(),
+                itemCount: widget.product.images!.length,
+                itemBuilder: (context, index) =>
+                    PhotoWidget(url: widget.product.images![index].url ?? ""),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                widget.product.images!.length,
+                (index) => Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  height: 2.w,
+                  width: 2.w,
+                  decoration: BoxDecoration(
+                      color: index == activePage ? themeGreen : themeLightGreen,
+                      shape: BoxShape.circle),
+                ),
+              ),
+            )
+          ],
+        ));
+  }
+}
+
 class PhotoWidget extends StatelessWidget {
   const PhotoWidget({
     super.key,
@@ -218,9 +305,8 @@ class PhotoWidget extends StatelessWidget {
   final String url;
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      url,
-      fit: BoxFit.contain,
+    return CachedNetworkImage(
+      imageUrl: url,
     );
   }
 }

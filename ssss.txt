@@ -1,0 +1,4 @@
+Text(
+                        "Checkout for \$${cartViewModel.getCartTotalPrice()}",
+                        style: TextStyle(color: themeWhite, fontSize: 14.sp),
+                      )

@@ -10,15 +10,15 @@ ThemeData theme = ThemeData(
     inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
-          borderSide: BorderSide.none, // Varsayılan olarak kenarlığı kaldır
+          borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
-          borderSide: BorderSide.none, // Etkin durumdaki kenarlık rengi
+          borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
-          borderSide: BorderSide.none, // Odaklanmış durumdaki kenarlık rengi
+          borderSide: BorderSide.none,
         ),
         filled: true,
         fillColor: themeGrey,

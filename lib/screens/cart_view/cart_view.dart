@@ -1,14 +1,24 @@
 import 'package:ecommerce_app/utils/constants.dart';
+import 'package:ecommerce_app/view_models/cart_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../widgets/cart_view/cart_product_widget.dart';
 import '../../widgets/home_view/custom_button.dart';
 
-class CartView extends StatelessWidget {
+class CartView extends StatefulWidget {
   const CartView({super.key});
 
   @override
+  State<CartView> createState() => _CartViewState();
+}
+
+class _CartViewState extends State<CartView> {
+  @override
   Widget build(BuildContext context) {
+    final cartViewModel = Provider.of<CartViewModel>(context);
+
     return SafeArea(
       child: Scaffold(
           body: Stack(children: [
@@ -33,17 +43,31 @@ class CartView extends StatelessWidget {
                       height: 1.h,
                     ),
                     Container(
-                      height: 70,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: themeGreen,
-                          borderRadius: BorderRadius.circular(22)),
-                      child: Center(
-                          child: Text(
-                        "Checkout for \$480.00",
-                        style: TextStyle(color: themeWhite, fontSize: 14.sp),
-                      )),
-                    )
+                        height: 70,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: themeGreen,
+                            borderRadius: BorderRadius.circular(22)),
+                        child: Center(
+                          child: FutureBuilder<double>(
+                            future: cartViewModel.getCartTotalPrice(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                double totalPrice = snapshot.data ?? 0;
+
+                                return totalPrice == 0
+                                    ? Container()
+                                    : Text(
+                                        "Checkout for \$$totalPrice",
+                                        style: TextStyle(
+                                            color: themeWhite, fontSize: 14.sp),
+                                      );
+                              }
+                            },
+                          ),
+                        ))
                   ],
                 ),
               )
@@ -56,20 +80,28 @@ class CartView extends StatelessWidget {
   }
 
   Wrap _createPaymentInfo() {
-    return const Wrap(
+    return Wrap(
       runSpacing: 12,
       children: [
-        TwoTextRowWidget(
-          label: "Subtotal",
-          value: "\$800.00",
-        ),
-        TwoTextRowWidget(
+        FutureBuilder(
+            future: context.watch<CartViewModel>().getCartSubTotalPrice(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                return TwoTextRowWidget(
+                  label: "Subtotal",
+                  value: "\$${snapshot.data}",
+                );
+              }
+            }),
+        const TwoTextRowWidget(
           label: "Delivery Fee",
-          value: "\$5.00",
+          value: "\$13.00",
         ),
-        TwoTextRowWidget(
+        const TwoTextRowWidget(
           label: "Discount",
-          value: "\$40%",
+          value: "\$5%",
         )
       ],
     );
@@ -113,15 +145,21 @@ class CartView extends StatelessWidget {
 
   SizedBox _createProductsSection() {
     return SizedBox(
-      height: 62.h,
-      child: Padding(
+        height: 62.h,
+        child: Padding(
           padding: EdgeInsets.only(top: 10.h),
-          child: ListView.separated(
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) => const CartProductWidget(),
-              separatorBuilder: (context, index) => const Divider(),
-              itemCount: 10)),
-    );
+          child: Consumer<CartViewModel>(
+            builder: (context, cartViewModel, child) {
+              return ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) => CartProductWidget(
+                        product: cartViewModel.products[index],
+                      ),
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemCount: cartViewModel.products.length);
+            },
+          ),
+        ));
   }
 
   Padding _createCustomAppBar(BuildContext context) {
@@ -131,6 +169,7 @@ class CartView extends StatelessWidget {
         CustomButton(
             icon: Icons.arrow_back_ios_new,
             function: () {
+              Provider.of<CartViewModel>(context, listen: false).getItemCount();
               Navigator.pop(context);
             }),
         Text(
@@ -170,114 +209,6 @@ class TwoTextRowWidget extends StatelessWidget {
           style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold),
         )
       ],
-    );
-  }
-}
-
-class CartProductWidget extends StatelessWidget {
-  const CartProductWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 150,
-      width: double.infinity,
-      color: themeWhite,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              margin: EdgeInsets.all(1.h),
-              decoration: BoxDecoration(
-                  image: const DecorationImage(
-                      image: NetworkImage(
-                          "https://www.arcelik.com.tr/media/resize/8905531600_OTH_20230516_091537.png/2000Wx2000H/image.webp")),
-                  color: themeGrey,
-                  borderRadius: BorderRadius.circular(20)),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 1.5.h),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Xbox Series X",
-                        style: TextStyle(
-                            fontSize: 12.sp, fontWeight: FontWeight.w500),
-                      ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.close,
-                            size: 15.sp,
-                            color: themeTextGrey,
-                          ))
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                          child: Text(
-                        "\$570.00",
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.bold),
-                      )),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              height: 9.w,
-                              width: 9.w,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: themeTextGrey, width: 1.5),
-                                  color: themeWhite,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: const Icon(
-                                Icons.remove,
-                                color: themeBlack,
-                              ),
-                            ),
-                            Text(
-                              "1",
-                              style: TextStyle(
-                                  fontSize: 12.sp, fontWeight: FontWeight.w500),
-                            ),
-                            Container(
-                              height: 9.w,
-                              width: 9.w,
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: themeGreen, width: 1.5),
-                                  color: themeWhite,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: const Icon(
-                                Icons.add,
-                                color: themeGreen,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
     );
   }
 }

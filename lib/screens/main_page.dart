@@ -1,3 +1,7 @@
+import 'package:ecommerce_app/screens/favorites_view/favorites_view.dart';
+import 'package:ecommerce_app/screens/home_view/home_view.dart';
+import 'package:ecommerce_app/screens/profile_view/profile_view.dart';
+import 'package:ecommerce_app/screens/search_view/search_view.dart';
 import 'package:ecommerce_app/utils/constants.dart';
 import 'package:ecommerce_app/view_models/main_page_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,39 +23,51 @@ class _MainPageViewState extends State<MainPageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: themeWhite,
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(
-            top: 7, left: defaultPadding * 1.4, right: defaultPadding * 1.4),
-        color: themeWhite,
-        height: 9.h,
-        child: const Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ButtomBarItem(
-              pageId: 0,
-              icon: Icons.home,
-              label: "Home",
-            ),
-            ButtomBarItem(
-              pageId: 1,
-              icon: CupertinoIcons.search,
-              label: "Search",
-            ),
-            ButtomBarItem(
-              pageId: 2,
-              icon: Icons.favorite_border_outlined,
-              label: "Favorites",
-            ),
-            ButtomBarItem(
-              pageId: 3,
-              icon: Icons.person_2_outlined,
-              label: "Profile",
-            ),
-          ],
-        ),
+      bottomNavigationBar: _createCustomButtomNavigationBar(),
+      body: IndexedStack(
+        index: Provider.of<MainPageViewModel>(context).activePageId,
+        children: const [
+          HomeView(),
+          SeachView(),
+          FavoritesView(),
+          ProfileView(),
+        ],
       ),
-      body: Provider.of<MainPageViewModel>(context).activePage,
+    );
+  }
+
+  Container _createCustomButtomNavigationBar() {
+    return Container(
+      padding: const EdgeInsets.only(
+          top: 7, left: defaultPadding * 1.4, right: defaultPadding * 1.4),
+      color: themeWhite,
+      height: 9.h,
+      child: const Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ButtomBarItem(
+            pageId: 0,
+            icon: Icons.home,
+            label: "Home",
+          ),
+          ButtomBarItem(
+            pageId: 1,
+            icon: CupertinoIcons.search,
+            label: "Search",
+          ),
+          ButtomBarItem(
+            pageId: 2,
+            icon: Icons.favorite_border_outlined,
+            label: "Favorites",
+          ),
+          ButtomBarItem(
+            pageId: 3,
+            icon: Icons.person_2_outlined,
+            label: "Profile",
+          ),
+        ],
+      ),
     );
   }
 }

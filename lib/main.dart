@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/screens/main_page.dart';
 import 'package:ecommerce_app/utils/theme.dart';
+import 'package:ecommerce_app/view_models/cart_view_model.dart';
 import 'package:ecommerce_app/view_models/home_view_model.dart';
 import 'package:ecommerce_app/view_models/main_page_view_model.dart';
 import 'package:ecommerce_app/view_models/product_detail_view_model.dart';
@@ -29,8 +30,12 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (_) => ProductDetailViewModel(),
           ),
+          ChangeNotifierProvider(
+            create: (_) => CartViewModel(),
+          ),
         ],
         child: MaterialApp(
+          scrollBehavior: const ScrollBehavior(),
           debugShowCheckedModeBanner: false,
           title: 'E-Commerce App',
           theme: theme,
