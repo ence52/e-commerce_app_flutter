@@ -4,6 +4,7 @@ import 'package:ecommerce_app/view_models/cart_view_model.dart';
 import 'package:ecommerce_app/view_models/home_view_model.dart';
 import 'package:ecommerce_app/view_models/main_page_view_model.dart';
 import 'package:ecommerce_app/view_models/product_detail_view_model.dart';
+import 'package:ecommerce_app/view_models/search_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (_) => CartViewModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => SearchViewModel(),
           ),
         ],
         child: MaterialApp(
