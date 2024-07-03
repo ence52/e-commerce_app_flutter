@@ -123,7 +123,6 @@ class ProductDetailView extends StatelessWidget {
                           bool isInCart = snapshot.data ?? false;
 
                           if (isInCart) {
-                            // Sepette varsa farklı bir widget göster
                             return Container(
                               decoration: BoxDecoration(
                                   color: themeGreen.withAlpha(70),

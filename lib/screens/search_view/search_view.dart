@@ -21,9 +21,9 @@ class _SeachViewState extends State<SeachView> {
       child: Container(
         color: themeWhite,
         width: double.infinity,
-        child: Column(
+        child: const Column(
           children: [
-            const _TitleText(),
+            _TitleText(),
             _SearchField(),
             SizedBox(
               height: 20,
@@ -37,9 +37,7 @@ class _SeachViewState extends State<SeachView> {
 }
 
 class _Body extends StatefulWidget {
-  const _Body({
-    super.key,
-  });
+  const _Body();
 
   @override
   State<_Body> createState() => _BodyState();
@@ -110,9 +108,7 @@ class _BodyState extends State<_Body> {
 }
 
 class _SearchField extends StatelessWidget {
-  _SearchField({
-    super.key,
-  });
+  const _SearchField();
   @override
   Widget build(BuildContext context) {
     final searchViewModel =
@@ -130,7 +126,6 @@ class _SearchField extends StatelessWidget {
           } else {
             await searchViewModel.fetchProductsBySearchText(value);
           }
-
           if (searchViewModel.products.isEmpty && value.isNotEmpty) {
             searchViewModel.setSearchFailed(true);
           }
@@ -150,9 +145,7 @@ class _SearchField extends StatelessWidget {
 }
 
 class _TitleText extends StatelessWidget {
-  const _TitleText({
-    super.key,
-  });
+  const _TitleText();
 
   @override
   Widget build(BuildContext context) {

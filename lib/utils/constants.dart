@@ -10,6 +10,7 @@ const themeLightGreen = Color.fromARGB(255, 170, 224, 179);
 const themeBlack = Color.fromARGB(255, 42, 42, 42);
 const themeWhite = Color.fromARGB(255, 255, 255, 255);
 const themeTextGrey = Color.fromARGB(255, 145, 145, 145);
+const themeTextFieldGrey = Color.fromARGB(255, 197, 197, 197);
 
 //-------------------PADDING--------------------------
 const defaultPadding = 30.0;

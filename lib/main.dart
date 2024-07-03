@@ -1,9 +1,10 @@
-import 'package:ecommerce_app/screens/main_page.dart';
+import 'package:ecommerce_app/screens/register_view/register_view.dart';
 import 'package:ecommerce_app/utils/theme.dart';
 import 'package:ecommerce_app/view_models/cart_view_model.dart';
 import 'package:ecommerce_app/view_models/home_view_model.dart';
 import 'package:ecommerce_app/view_models/main_page_view_model.dart';
 import 'package:ecommerce_app/view_models/product_detail_view_model.dart';
+import 'package:ecommerce_app/view_models/register_view_model.dart';
 import 'package:ecommerce_app/view_models/search_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,13 +38,16 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (_) => SearchViewModel(),
           ),
+          ChangeNotifierProvider(
+            create: (_) => RegisterViewModel(),
+          ),
         ],
         child: MaterialApp(
           scrollBehavior: const ScrollBehavior(),
           debugShowCheckedModeBanner: false,
           title: 'E-Commerce App',
           theme: theme,
-          home: const MainPageView(),
+          home: const RegisterView(),
         ),
       );
     });

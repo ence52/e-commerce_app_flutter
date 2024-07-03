@@ -17,7 +17,7 @@ class CartView extends StatefulWidget {
 class _CartViewState extends State<CartView> {
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = Provider.of<CartViewModel>(context);
+    Provider.of<CartViewModel>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -42,32 +42,7 @@ class _CartViewState extends State<CartView> {
                     SizedBox(
                       height: 1.h,
                     ),
-                    Container(
-                        height: 70,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: themeGreen,
-                            borderRadius: BorderRadius.circular(22)),
-                        child: Center(
-                          child: FutureBuilder<double>(
-                            future: cartViewModel.getCartTotalPrice(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                double totalPrice = snapshot.data ?? 0;
-
-                                return totalPrice == 0
-                                    ? Container()
-                                    : Text(
-                                        "Checkout for \$$totalPrice",
-                                        style: TextStyle(
-                                            color: themeWhite, fontSize: 14.sp),
-                                      );
-                              }
-                            },
-                          ),
-                        ))
+                    const _CheckoutButton()
                   ],
                 ),
               )
@@ -184,6 +159,39 @@ class _CartViewState extends State<CartView> {
             })
       ]),
     );
+  }
+}
+
+class _CheckoutButton extends StatelessWidget {
+  const _CheckoutButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final cartViewModel = context.watch<CartViewModel>();
+    return Container(
+        height: 70,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            color: themeGreen, borderRadius: BorderRadius.circular(22)),
+        child: Center(
+          child: FutureBuilder<double>(
+            future: cartViewModel.getCartTotalPrice(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                double totalPrice = snapshot.data ?? 0;
+
+                return totalPrice == 0
+                    ? Container()
+                    : Text(
+                        "Checkout for \$$totalPrice",
+                        style: TextStyle(color: themeWhite, fontSize: 14.sp),
+                      );
+              }
+            },
+          ),
+        ));
   }
 }
 

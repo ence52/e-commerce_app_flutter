@@ -40,7 +40,8 @@ class _CategoryButtonWidgetState extends State<CategoryButtonWidget> {
                         borderRadius: BorderRadius.circular(12))),
                     backgroundColor: const WidgetStatePropertyAll(themeGreen))
                 : ButtonStyle(
-                    side: const WidgetStatePropertyAll(BorderSide(width: 2)),
+                    side: const WidgetStatePropertyAll(
+                        BorderSide(width: 2, color: themeTextGrey)),
                     shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14))),
                     backgroundColor: const WidgetStatePropertyAll(themeWhite)),

@@ -14,6 +14,7 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        FocusScope.of(context).unfocus();
         Provider.of<ProductDetailViewModel>(context, listen: false)
             .setProduct(product);
         Navigator.push(context,
