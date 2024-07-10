@@ -14,14 +14,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _checkToken();
+    Future.microtask(() {
+      _checkToken();
+    });
   }
 
-  _checkToken() async {
+  _checkToken() {
     String? token = SharedPrefs().prefs?.getString("token");
 
-    if (token!.isNotEmpty) {
-      Navigator.pushReplacement(
+    if (token != null && token.isNotEmpty) {
+      Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => const MainPageView(),

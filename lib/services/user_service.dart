@@ -60,7 +60,6 @@ class UserService {
   }
 
   Future<void> logout() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString("token", "");
+    SharedPrefs().prefs?.setString("token", "");
   }
 }
