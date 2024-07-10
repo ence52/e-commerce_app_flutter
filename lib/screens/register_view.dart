@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/screens/main_page.dart';
+import 'package:ecommerce_app/screens/login_view.dart';
 import 'package:ecommerce_app/utils/constants.dart';
 import 'package:ecommerce_app/view_models/register_view_model.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +22,9 @@ class RegisterView extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatefulWidget {
+class _RegisterForm extends StatelessWidget {
   const _RegisterForm();
 
-  @override
-  State<_RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<_RegisterForm> {
   @override
   Widget build(BuildContext context) {
     return Consumer<RegisterViewModel>(
@@ -103,7 +98,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                       "Already have an account ?",
                       style: TextStyle(fontSize: 11.sp),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     TextButton(
@@ -111,7 +106,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const MainPageView(),
+                                builder: (context) => const LoginView(),
                               ));
                         },
                         child: Text(

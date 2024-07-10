@@ -1,7 +1,8 @@
-import 'package:ecommerce_app/screens/register_view/register_view.dart';
+import 'package:ecommerce_app/screens/splash_screen.dart';
 import 'package:ecommerce_app/utils/theme.dart';
 import 'package:ecommerce_app/view_models/cart_view_model.dart';
 import 'package:ecommerce_app/view_models/home_view_model.dart';
+import 'package:ecommerce_app/view_models/login_view_model.dart';
 import 'package:ecommerce_app/view_models/main_page_view_model.dart';
 import 'package:ecommerce_app/view_models/product_detail_view_model.dart';
 import 'package:ecommerce_app/view_models/register_view_model.dart';
@@ -10,7 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-void main() {
+import 'core/shared_prefs.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPrefs().init();
   runApp(const MyApp());
 }
 
@@ -41,13 +46,16 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (_) => RegisterViewModel(),
           ),
+          ChangeNotifierProvider(
+            create: (_) => LoginViewModel(),
+          ),
         ],
         child: MaterialApp(
           scrollBehavior: const ScrollBehavior(),
           debugShowCheckedModeBanner: false,
           title: 'E-Commerce App',
           theme: theme,
-          home: const RegisterView(),
+          home: const SplashScreen(),
         ),
       );
     });

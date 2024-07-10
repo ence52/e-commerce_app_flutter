@@ -5,6 +5,14 @@ import 'package:ecommerce_app/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class ProductService {
+  static final ProductService _instance = ProductService._internal();
+
+  factory ProductService() {
+    return _instance;
+  }
+
+  ProductService._internal();
+
   Future<List<Product>> fetchProducts() async {
     var url = Uri.parse('$API_BASE_URL/products/');
     var response = await http.get(url);

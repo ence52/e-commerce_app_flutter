@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../widgets/cart_view/cart_product_widget.dart';
-import '../../widgets/home_view/custom_button.dart';
+import '../widgets/cart_view/cart_product_widget.dart';
+import '../widgets/home_view/custom_button.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});

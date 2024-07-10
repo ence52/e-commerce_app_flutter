@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../models/product_respone_model.dart';
-import '../../widgets/product_detail_view/detail_page_widget.dart';
+import '../models/product_respone_model.dart';
+import '../widgets/product_detail_view/detail_page_widget.dart';
 
 class ProductDetailView extends StatelessWidget {
   const ProductDetailView({super.key});

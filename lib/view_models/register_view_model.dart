@@ -62,7 +62,8 @@ class RegisterViewModel extends ChangeNotifier {
     User user = User(
         name: nameController.text,
         email: emailController.text,
-        password: passwordController.text);
+        password: passwordController.text,
+        disabled: false);
 
     try {
       _isLoading = true;

@@ -5,6 +5,14 @@ import 'package:http/http.dart' as http;
 import '../utils/constants.dart';
 
 class CartService {
+  static final CartService _instance = CartService._internal();
+
+  factory CartService() {
+    return _instance;
+  }
+
+  CartService._internal();
+
   Future<List<ProductCartResponseModel>> fetchProducts() async {
     final url = Uri.parse('$API_BASE_URL/carts/1/items/');
 

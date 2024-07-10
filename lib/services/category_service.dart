@@ -5,6 +5,14 @@ import 'package:ecommerce_app/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class CategoryService {
+  static final CategoryService _instance = CategoryService._internal();
+
+  factory CategoryService() {
+    return _instance;
+  }
+
+  CategoryService._internal();
+
   Future<List<CategoryModel>> fetchCategories() async {
     var url = Uri.parse('$API_BASE_URL/categories/');
     var response = await http.get(url);

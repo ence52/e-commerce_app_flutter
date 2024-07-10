@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/screens/cart_view/cart_view.dart';
+import 'package:ecommerce_app/screens/cart_view.dart';
 import 'package:ecommerce_app/utils/constants.dart';
 import 'package:ecommerce_app/view_models/cart_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../view_models/home_view_model.dart';
-import '../../widgets/home_view/category_button_widget.dart';
-import '../../widgets/home_view/custom_button.dart';
-import '../../widgets/home_view/item_card.dart';
+import '../view_models/home_view_model.dart';
+import '../widgets/home_view/category_button_widget.dart';
+import '../widgets/home_view/custom_button.dart';
+import '../widgets/home_view/item_card.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

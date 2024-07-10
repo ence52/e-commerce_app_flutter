@@ -1,7 +1,7 @@
-import 'package:ecommerce_app/screens/favorites_view/favorites_view.dart';
-import 'package:ecommerce_app/screens/home_view/home_view.dart';
-import 'package:ecommerce_app/screens/profile_view/profile_view.dart';
-import 'package:ecommerce_app/screens/search_view/search_view.dart';
+import 'package:ecommerce_app/screens/favorites_view.dart';
+import 'package:ecommerce_app/screens/home_view.dart';
+import 'package:ecommerce_app/screens/profile_view.dart';
+import 'package:ecommerce_app/screens/search_view.dart';
 import 'package:flutter/cupertino.dart';
 
 class MainPageViewModel extends ChangeNotifier {

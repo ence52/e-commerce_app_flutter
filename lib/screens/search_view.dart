@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../widgets/home_view/item_card.dart';
+import '../widgets/home_view/item_card.dart';
 
 class SeachView extends StatefulWidget {
   const SeachView({super.key});
