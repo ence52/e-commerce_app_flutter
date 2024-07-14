@@ -1,6 +1,7 @@
-import 'package:ecommerce_app/core/shared_prefs.dart';
 import 'package:ecommerce_app/screens/login_view.dart';
+import 'package:ecommerce_app/services/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -13,7 +14,7 @@ class ProfileView extends StatelessWidget {
           width: 200,
           child: ElevatedButton(
               onPressed: () {
-                SharedPrefs().prefs?.setString("token", "");
+                context.read<UserService>().logout();
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

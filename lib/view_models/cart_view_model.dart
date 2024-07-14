@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/models/product_cart_model.dart';
+import 'package:ecommerce_app/models/user_info.dart';
 import 'package:ecommerce_app/services/cart_service.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,15 @@ class CartViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   int get itemCount => _itemCount;
   List<ProductCartResponseModel> get products => _products;
+
+  UserInfoModel? user;
+
+  CartViewModel(this.user);
+
+  void updateUser(UserInfoModel? newUser) {
+    user = newUser;
+    notifyListeners();
+  }
 
   Future<void> fetchProducts() async {
     try {

@@ -17,8 +17,6 @@ class CartView extends StatefulWidget {
 class _CartViewState extends State<CartView> {
   @override
   Widget build(BuildContext context) {
-    Provider.of<CartViewModel>(context);
-
     return SafeArea(
       child: Scaffold(
           body: Stack(children: [
@@ -167,7 +165,7 @@ class _CheckoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = context.watch<CartViewModel>();
+    final cartViewModel = Provider.of<CartViewModel>(context, listen: true);
     return Container(
         height: 70,
         width: double.infinity,

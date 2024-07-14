@@ -1,10 +1,10 @@
 import 'dart:convert';
-
+import 'package:ecommerce_app/core/auth.dart';
 import 'package:ecommerce_app/core/shared_prefs.dart';
+import 'package:ecommerce_app/models/user_info.dart';
 import 'package:ecommerce_app/models/user_login_model.dart';
 import 'package:ecommerce_app/models/user_register_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/constants.dart';
 
 class UserService {
@@ -15,6 +15,8 @@ class UserService {
   }
 
   UserService._internal();
+
+  UserInfoModel? user;
 
   Future<User> createUser(User user) async {
     var url = Uri.parse(
@@ -52,7 +54,7 @@ class UserService {
     );
     if (response.statusCode == 200) {
       dynamic data = jsonDecode(response.body);
-      SharedPrefs().prefs?.setString("token", data["access_token"]);
+      AuthService().setToken(data["access_token"]);
       return true;
     } else {
       throw Exception("Failed to login");
@@ -61,5 +63,18 @@ class UserService {
 
   Future<void> logout() async {
     SharedPrefs().prefs?.setString("token", "");
+  }
+
+  Future<bool> testToken() async {
+    final token = AuthService().getToken();
+    final url = Uri.parse('$API_BASE_URL/users/info');
+    final headers = {"Authorization": "Bearer $token"};
+
+    final response = await http.get(url, headers: headers);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
