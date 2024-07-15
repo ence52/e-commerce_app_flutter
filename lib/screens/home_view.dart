@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/screens/cart_view.dart';
 import 'package:ecommerce_app/utils/constants.dart';
 import 'package:ecommerce_app/view_models/cart_view_model.dart';
+import 'package:ecommerce_app/view_models/favorites_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,9 @@ class _HomeViewState extends State<HomeView> {
     });
     Future.microtask(() {
       Provider.of<CartViewModel>(context, listen: false).getItemCount();
+    });
+    Future.microtask(() {
+      Provider.of<FavoritesViewModel>(context, listen: false).fetchFavorites();
     });
   }
 
@@ -73,7 +77,7 @@ class _HomeViewState extends State<HomeView> {
         children: [
           Text(
             "Discover",
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
           _createCartButton(),
         ],
@@ -182,7 +186,7 @@ class _HomeViewState extends State<HomeView> {
               Padding(
                 padding: const EdgeInsets.all(2),
                 child: CustomButton(
-                  icon: Icons.shopping_bag_outlined,
+                  icon: Icon(Icons.shopping_bag_outlined),
                   function: () {
                     Navigator.push(
                         context,

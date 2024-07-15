@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/utils/constants.dart';
 import 'package:ecommerce_app/view_models/cart_view_model.dart';
+import 'package:ecommerce_app/view_models/favorites_view_model.dart';
 import 'package:ecommerce_app/view_models/product_detail_view_model.dart';
 import 'package:ecommerce_app/widgets/home_view/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -50,20 +51,20 @@ class ProductDetailView extends StatelessWidget {
             ),
             _createPriceAndAddtoCart(product, context)
           ]),
-          _createCustomAppBar(context),
+          _createCustomAppBar(product.id!, context),
         ]),
       ),
     );
   }
 
-  Padding _createCustomAppBar(BuildContext context) {
+  Padding _createCustomAppBar(int productId, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(defaultPadding * 0.7),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomButton(
-              icon: Icons.arrow_back_ios_new,
+              icon: Icon(Icons.arrow_back_ios_new),
               function: () async {
                 if (!context.mounted) return;
                 Navigator.of(context).pop();
@@ -72,15 +73,24 @@ class ProductDetailView extends StatelessWidget {
           Row(
             children: [
               CustomButton(
-                  icon: Icons.favorite,
-                  function: () {
-                    Navigator.pop(context);
+                  icon: context
+                          .watch<FavoritesViewModel>()
+                          .isInFavorites(productId)
+                      ? Icon(
+                          Icons.favorite,
+                          color: Colors.pink,
+                        )
+                      : Icon(Icons.favorite_border_outlined),
+                  function: () async {
+                    await context
+                        .read<FavoritesViewModel>()
+                        .toggleFavorite(productId);
                   }),
               const SizedBox(
                 width: 15,
               ),
               CustomButton(
-                  icon: Icons.share_outlined,
+                  icon: Icon(Icons.share_outlined),
                   function: () {
                     Navigator.pop(context);
                   })
@@ -113,42 +123,31 @@ class ProductDetailView extends StatelessWidget {
                 SizedBox(
                     height: 60,
                     width: 200,
-                    child: FutureBuilder<bool>(
-                      future: Provider.of<CartViewModel>(context, listen: true)
-                          .isProductInCart(product.id!),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          bool isInCart = snapshot.data ?? false;
-
-                          if (isInCart) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  color: themeGreen.withAlpha(70),
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Center(
-                                child: Text(
-                                  "In Cart",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: themeGreen,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            );
-                          } else {
-                            return _createAddToCartButton(context, product.id!);
-                          }
-                        }
-                      },
-                    ))
+                    child: Provider.of<CartViewModel>(context, listen: true)
+                            .isProductInCart(product.id!)
+                        ? _createInCart()
+                        : _createAddToCartButton(context, product.id!))
               ],
             ),
             const SizedBox(
               height: 25,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Container _createInCart() {
+    return Container(
+      decoration: BoxDecoration(
+          color: themeGreen.withAlpha(70),
+          borderRadius: BorderRadius.circular(12)),
+      child: Center(
+        child: Text(
+          "In Cart",
+          style: TextStyle(
+              fontSize: 14.sp, color: themeGreen, fontWeight: FontWeight.bold),
         ),
       ),
     );

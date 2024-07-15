@@ -136,7 +136,7 @@ class CartViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> isProductInCart(int productId) async {
+  bool isProductInCart(int productId) {
     try {
       bool isInCart = _products.any((product) => product.id == productId);
 

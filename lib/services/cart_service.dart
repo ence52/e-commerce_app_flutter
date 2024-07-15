@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:ecommerce_app/core/shared_prefs.dart';
 import 'package:ecommerce_app/models/product_cart_model.dart';
 import 'package:http/http.dart' as http;
 import '../core/auth.dart';

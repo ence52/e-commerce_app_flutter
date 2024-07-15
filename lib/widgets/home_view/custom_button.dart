@@ -8,7 +8,7 @@ class CustomButton extends StatelessWidget {
     required this.icon,
     required this.function,
   });
-  final IconData icon;
+  final Icon icon;
   final VoidCallback function;
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,7 @@ class CustomButton extends StatelessWidget {
                 color: const Color.fromARGB(255, 232, 232, 232), width: 3),
             color: themeWhite,
             borderRadius: BorderRadius.circular(50)),
-        child: Center(
-          child: Icon(
-            icon,
-            size: 15.sp,
-          ),
-        ),
+        child: Center(child: icon),
       ),
     );
   }

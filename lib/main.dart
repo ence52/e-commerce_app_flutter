@@ -4,6 +4,7 @@ import 'package:ecommerce_app/screens/main_page.dart';
 import 'package:ecommerce_app/services/user_service.dart';
 import 'package:ecommerce_app/utils/theme.dart';
 import 'package:ecommerce_app/view_models/cart_view_model.dart';
+import 'package:ecommerce_app/view_models/favorites_view_model.dart';
 import 'package:ecommerce_app/view_models/home_view_model.dart';
 import 'package:ecommerce_app/view_models/login_view_model.dart';
 import 'package:ecommerce_app/view_models/main_page_view_model.dart';
@@ -49,6 +50,12 @@ class MyApp extends StatelessWidget {
                 Provider.of<UserService>(context, listen: false).user),
             update: (context, userService, cartViewModel) =>
                 cartViewModel!..updateUser(userService.user),
+          ),
+          ChangeNotifierProxyProvider<UserService, FavoritesViewModel>(
+            create: (context) => FavoritesViewModel(
+                Provider.of<UserService>(context, listen: false).user),
+            update: (context, userService, favoriteViewModel) =>
+                favoriteViewModel!..updateUser(userService.user),
           ),
           ChangeNotifierProvider(
             create: (_) => SearchViewModel(),

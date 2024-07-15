@@ -158,7 +158,7 @@ class _TitleText extends StatelessWidget {
         children: [
           Text(
             "Search",
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
         ],
       ),

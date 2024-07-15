@@ -140,7 +140,7 @@ class _CartViewState extends State<CartView> {
       padding: const EdgeInsets.all(defaultPadding * 0.7),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         CustomButton(
-            icon: Icons.arrow_back_ios_new,
+            icon: Icon(Icons.arrow_back_ios_new),
             function: () {
               Provider.of<CartViewModel>(context, listen: false).getItemCount();
               Navigator.pop(context);
@@ -148,10 +148,10 @@ class _CartViewState extends State<CartView> {
         Text(
           "My Cart",
           style: TextStyle(
-              color: themeBlack, fontSize: 15.sp, fontWeight: FontWeight.w500),
+              color: themeBlack, fontSize: 15.sp, fontWeight: FontWeight.bold),
         ),
         CustomButton(
-            icon: Icons.more_horiz,
+            icon: Icon(Icons.more_horiz),
             function: () {
               Navigator.pop(context);
             })
