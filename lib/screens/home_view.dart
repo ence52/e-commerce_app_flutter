@@ -186,7 +186,7 @@ class _HomeViewState extends State<HomeView> {
               Padding(
                 padding: const EdgeInsets.all(2),
                 child: CustomButton(
-                  icon: Icon(Icons.shopping_bag_outlined),
+                  icon: const Icon(Icons.shopping_bag_outlined),
                   function: () {
                     Navigator.push(
                         context,

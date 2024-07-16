@@ -55,6 +55,7 @@ class UserService {
     if (response.statusCode == 200) {
       dynamic data = jsonDecode(response.body);
       AuthService().setToken(data["access_token"]);
+      await testToken();
       return true;
     } else {
       throw Exception("Failed to login");
@@ -63,6 +64,7 @@ class UserService {
 
   Future<void> logout() async {
     SharedPrefs().prefs?.setString("token", "");
+    UserService().user = null;
   }
 
   Future<bool> testToken() async {
@@ -72,6 +74,8 @@ class UserService {
 
     final response = await http.get(url, headers: headers);
     if (response.statusCode == 200) {
+      dynamic data = jsonDecode(response.body);
+      user = UserInfoModel.fromJson(data);
       return true;
     } else {
       return false;

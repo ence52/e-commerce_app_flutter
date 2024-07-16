@@ -1,6 +1,5 @@
 import 'package:ecommerce_app/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({

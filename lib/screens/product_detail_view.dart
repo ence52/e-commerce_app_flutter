@@ -64,7 +64,7 @@ class ProductDetailView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomButton(
-              icon: Icon(Icons.arrow_back_ios_new),
+              icon: const Icon(Icons.arrow_back_ios_new),
               function: () async {
                 if (!context.mounted) return;
                 Navigator.of(context).pop();
@@ -76,11 +76,11 @@ class ProductDetailView extends StatelessWidget {
                   icon: context
                           .watch<FavoritesViewModel>()
                           .isInFavorites(productId)
-                      ? Icon(
+                      ? const Icon(
                           Icons.favorite,
                           color: Colors.pink,
                         )
-                      : Icon(Icons.favorite_border_outlined),
+                      : const Icon(Icons.favorite_border_outlined),
                   function: () async {
                     await context
                         .read<FavoritesViewModel>()
@@ -90,7 +90,7 @@ class ProductDetailView extends StatelessWidget {
                 width: 15,
               ),
               CustomButton(
-                  icon: Icon(Icons.share_outlined),
+                  icon: const Icon(Icons.share_outlined),
                   function: () {
                     Navigator.pop(context);
                   })

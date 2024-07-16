@@ -16,36 +16,44 @@ class FavoritesView extends StatelessWidget {
         color: themeGrey,
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: defaultPadding, vertical: defaultPadding * 0.4),
+          padding: const EdgeInsets.only(
+              left: defaultPadding,
+              right: defaultPadding,
+              top: defaultPadding * 0.4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 10.h,
-              ),
               Text(
                 "Favorites",
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 2.h),
-                  child: Consumer<FavoritesViewModel>(
-                    builder: (context, favoritesViewModel, child) {
-                      return ListView.separated(
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context, index) => _FavoritesCard(
-                                product: favoritesViewModel.favorites[index],
-                              ),
-                          separatorBuilder: (context, index) => const Divider(),
-                          itemCount: favoritesViewModel.favorites.length);
-                    },
-                  ),
-                ),
-              )
+              const _FavoriteProductsSection(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FavoriteProductsSection extends StatelessWidget {
+  const _FavoriteProductsSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.only(top: 2.h),
+        child: Consumer<FavoritesViewModel>(
+          builder: (context, favoritesViewModel, child) {
+            return ListView.separated(
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) => _FavoritesCard(
+                      product: favoritesViewModel.favorites[index],
+                    ),
+                separatorBuilder: (context, index) => const Divider(),
+                itemCount: favoritesViewModel.favorites.length);
+          },
         ),
       ),
     );
@@ -69,7 +77,7 @@ class _FavoritesCard extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1,
                 child: Image.network(
-                    fit: BoxFit.cover, "${product.images![0].url}"),
+                    fit: BoxFit.contain, "${product.images![0].url}"),
               ),
               Expanded(
                 child: Column(
